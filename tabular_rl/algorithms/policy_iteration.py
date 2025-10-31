@@ -41,16 +41,16 @@ def policy_improvement(env:GridworldEnv, Vs:np.ndarray, policy:dict, gamma=0.5):
       policy_stable = False
   return policy, policy_stable
 
-def policy_iteration(env:GridworldEnv, gamma=0.95, threshold=1e-10, max_iters=100):
+def policy_iteration(env:GridworldEnv, policy:dict, gamma=0.95, threshold=1e-10, max_iters=100):
   # Initialization
   Vs = initialize_state_values(env)
-  policy = initialize_policy(env)
 
   # Policy evaluation and improvement
   Vs_history = []
+  Vs_history.append(Vs.copy().flatten())
   policy_stable = False
   while not policy_stable:
-    Vs_history.append(Vs.copy().flatten())
     Vs = policy_evaluation(env, Vs, policy, gamma, threshold, max_iters)
     policy, policy_stable = policy_improvement(env, Vs, policy, gamma)
+    Vs_history.append(Vs.copy().flatten())
   return policy, Vs, Vs_history

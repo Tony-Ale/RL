@@ -70,7 +70,8 @@ def generate_episode(
     env: GridworldEnv,
     policy: dict,
     start_state_idx: Optional[int] = None,
-    start_action_idx=None,
+    start_action_idx: Optional[int]=None,
+    is_policy_stochastic: bool = False,
     max_steps=100,
 ) -> State_Data:
     """
@@ -98,7 +99,12 @@ def generate_episode(
         if i == 0 and start_action_idx is not None:
             action = start_action_idx
         else:
-            action = policy[next_idx]
+            if is_policy_stochastic:
+                actions = list(env.ACTIONS.keys())
+                action = np.random.choice(actions, p=policy[next_idx])
+            else:
+                # deterministic policy.
+                action = policy[next_idx]
 
         new_state, reward, done, _ = env.step(action)
 
