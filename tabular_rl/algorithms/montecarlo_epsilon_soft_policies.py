@@ -1,39 +1,6 @@
-from algorithms.helpers import generate_episode, State_Data
+from algorithms.helpers import *
 from environments.grid_world import GridworldEnv
 import numpy as np
-import random
-
-def generate_state_action_keys(state_index, action_key):
-    return (state_index, action_key)
-
-def initialize_returns(env:GridworldEnv)->dict[int, list]:
-    returns = {}
-    actions = env.ACTIONS
-
-    for state_index in range(env.width * env.height):
-        for action_key in actions:
-            key = generate_state_action_keys(state_index, action_key)
-            returns[key] = []
-    return returns
-
-def initialize_action_value(env:GridworldEnv):
-    Q_s_a = {}
-    actions = env.ACTIONS
-    state_indices = [idx for idx in range(env.width*env.height) if env.index_to_state(idx) not in env.goals ]
-
-    for state_index in state_indices:
-        for action_key in actions:
-            key = generate_state_action_keys(state_index, action_key)
-            Q_s_a[key] = np.random.rand() # generate a random value from [0, 1)
-    return Q_s_a
-
-def is_state_action_visited_previously(state_index, action_key, episode:State_Data):
-  """moves down the tree and checks if state_index was visited previously in the episode"""
-  if state_index == episode.state_idx and action_key == episode.action:
-      return True
-  if episode.prev_state_obj is None:
-      return False
-  return is_state_action_visited_previously(state_index, action_key, episode.prev_state_obj)
 
 def initialize_epsilon_soft_policy(env:GridworldEnv, epsilon=0.2):
     """Creates an arbitrarily soft policy where one action is randomly selected as the greedy action"""

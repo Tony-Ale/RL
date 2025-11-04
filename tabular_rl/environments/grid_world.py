@@ -11,6 +11,7 @@ class GridworldEnv:
     - <0, 0> is at the top left corner
     - step returns: (next_state, reward, done, info)
   """
+  VERBOSE_ACTIONS = {0: 'UP', 1: 'RIGHT', 2: 'DOWN', 3: 'LEFT'}
   ACTIONS = {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
 
   def __init__(self, width=4, height=4, start=(0, 0), goals=[(3, 3), ],
